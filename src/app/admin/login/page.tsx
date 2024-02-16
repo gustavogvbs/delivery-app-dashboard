@@ -1,10 +1,18 @@
+"use client";
+
 import { ReactNode } from "react";
 
 import FormComponent from "@components/FormComponent/form-login";
 import FormRegister from "@components/FormComponent/form-register";
 import * as TabsRoot from "@ui/tabs";
 
+import { RegisterSchemaType } from "@type/forms/register";
+
 const TenantLogin = (): ReactNode => {
+  const handleRegister = (data: RegisterSchemaType) => {
+    console.log(data);
+  };
+
   return (
     <section className="min-h-screen px-2 flex flex-col gap-10 pt-[10vh] bg-zinc-900">
       <div className="max-w-[380px] mx-auto">
@@ -34,7 +42,7 @@ const TenantLogin = (): ReactNode => {
             <FormComponent />
           </TabsRoot.TabsContent>
           <TabsRoot.TabsContent value="register">
-            <FormRegister />
+            <FormRegister handleRegister={handleRegister} />
           </TabsRoot.TabsContent>
         </TabsRoot.Tabs>
       </div>

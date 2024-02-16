@@ -12,16 +12,16 @@ import { Label } from "@ui/label";
 
 import { RegisterSchemaType, registerSchema } from "@type/forms/register";
 
-const FormRegister = (): ReactNode => {
+interface Props {
+  handleRegister: (data: RegisterSchemaType) => void;
+}
+
+const FormRegister = ({ handleRegister }: Props): ReactNode => {
   const [toogleVisiblePassword, setToogleVisiblePassword] = useState(false);
 
   const { register, handleSubmit } = useForm<RegisterSchemaType>({
     resolver: zodResolver(registerSchema),
   });
-
-  const handleRegister = (data: RegisterSchemaType) => {
-    console.log(data);
-  };
 
   return (
     <div className="max-w-[400px] w-full rounded-lg shadow-md shadow-zinc-800">
