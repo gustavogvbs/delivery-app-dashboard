@@ -19,25 +19,22 @@ const FormComponent = (): ReactNode => {
   const useApiAdmin = apiAdmin();
 
   const [toogleVisiblePassword, setToogleVisiblePassword] = useState(false);
-  const [isLoading, setIsloading] = useState(false);
 
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isSubmitting: isLoading },
   } = useForm<LoginSchemaType>({
     resolver: zodResolver(loginSchema),
   });
 
   const handleLoginSubmit = async (data: LoginSchemaType) => {
-    setIsloading(true);
     try {
       const user = await useApiAdmin.loginAmin(data);
       console.log(user);
     } catch (error) {
       console.log(error);
     }
-    setIsloading(false);
   };
 
   return (
