@@ -1,6 +1,6 @@
 import { ReactNode } from "react";
 
-import FormComponent from "@components/FormComponent/form-login";
+import FormComponent from "@components/FormComponents/form-login";
 
 const TenantLogin = (): ReactNode => {
   return (

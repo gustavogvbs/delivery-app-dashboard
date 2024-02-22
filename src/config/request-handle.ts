@@ -1,8 +1,12 @@
-import { env } from "@config/env";
 import axios, { AxiosInstance } from "axios";
 
+import { env } from "@config/env";
+
 const req: AxiosInstance = axios.create({
-  baseURL: env.API_URL,
+  baseURL: env.NEXT_PUBLIC_API_URL,
+  headers: {
+    "Content-Type": "application/json",
+  },
 });
 
 req.interceptors.response.use(

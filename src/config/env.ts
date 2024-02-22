@@ -1,10 +1,11 @@
-import getConfig from "next/config";
+"use client";
 
-const { publicRuntimeConfig } = getConfig();
+import { z } from "zod";
 
-import z from "zod";
-const envSchema = z.object({
-  API_URL: z.string().url(),
+const schemaEnv = z.object({
+  NEXT_PUBLIC_API_URL: z.string(),
 });
 
-export const env = envSchema.parse(publicRuntimeConfig);
+export const env = schemaEnv.parse({
+  NEXT_PUBLIC_API_URL: process.env.NEXT_PUBLIC_API_URL,
+});

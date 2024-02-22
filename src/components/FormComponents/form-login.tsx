@@ -1,20 +1,49 @@
 "use client";
 import { ReactNode, useState } from "react";
+import { useForm } from "react-hook-form";
 
-import { EyeOffIcon, EyeIcon } from "lucide-react";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { apiAdmin } from "@lib/api";
 
+import { ButtonForm } from "@components/FormComponents/button-form";
 import { Button } from "@ui/button";
 import * as CardRoot from "@ui/card";
-import { Input } from "@ui/input";
 import { Label } from "@ui/label";
 
+import { LoginSchemaType, loginSchema } from "@type/forms/login";
+
+import { InputTextForm } from "./input-text-form.tsx";
+import MessageErrorForm from "./message-error-form";
+
 const FormComponent = (): ReactNode => {
+  const useApiAdmin = apiAdmin();
+
   const [toogleVisiblePassword, setToogleVisiblePassword] = useState(false);
+  const [isLoading, setIsloading] = useState(false);
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<LoginSchemaType>({
+    resolver: zodResolver(loginSchema),
+  });
+
+  const handleLoginSubmit = async (data: LoginSchemaType) => {
+    setIsloading(true);
+    try {
+      const user = await useApiAdmin.loginAmin(data);
+      console.log(user);
+    } catch (error) {
+      console.log(error);
+    }
+    setIsloading(false);
+  };
 
   return (
     <div className="max-w-[400px] w-full rounded-lg shadow-md shadow-zinc-800">
       <CardRoot.Card className="border-2 rounded-lg border-zinc-600 bg-zinc-800">
-        <form action="" method="post">
+        <form onSubmit={handleSubmit(handleLoginSubmit)}>
           <CardRoot.CardHeader>
             <CardRoot.CardTitle className="text-gray-100 text-2xl font-bold">
               Dashboard
@@ -33,12 +62,18 @@ const FormComponent = (): ReactNode => {
                 >
                   Email
                 </Label>
-                <Input
-                  type="email"
+                <InputTextForm.root
                   id="email"
-                  placeholder="Digite seu email de login"
-                  className="border-zinc-900 text-zinc-900 bg-gray-100 focus-visible:outline focus-visible:outline-zinc-600 focus:outline-zinc-600"
+                  disabled={isLoading}
+                  placeholder="Digite seu email"
+                  type="email"
+                  error={!!errors.email}
+                  register={register("email")}
                 />
+
+                {errors.email && (
+                  <MessageErrorForm>{errors.email.message}</MessageErrorForm>
+                )}
               </div>
               <div className="flex flex-col space-y-1.5">
                 <Label
@@ -47,27 +82,24 @@ const FormComponent = (): ReactNode => {
                 >
                   Senha
                 </Label>
-                <div className="relative">
-                  <Input
-                    type={toogleVisiblePassword ? "text" : "password"}
-                    id="password"
-                    placeholder="Digite sua senha"
-                    className="border-zinc-900 text-zinc-900 bg-gray-100 focus-visible:outline focus-visible:outline-zinc-600 focus:outline-zinc-600 pr-10"
+                <InputTextForm.root
+                  id="password"
+                  disabled={isLoading}
+                  placeholder="Digite sua senha"
+                  type="password"
+                  error={!!errors.password}
+                  register={register("password")}
+                >
+                  <InputTextForm.button
+                    toogleVisible={toogleVisiblePassword}
+                    setToogleVisible={() =>
+                      setToogleVisiblePassword(!toogleVisiblePassword)
+                    }
                   />
-                  <button
-                    className="absolute right-3 top-0 h-full"
-                    onClick={(e) => {
-                      e.preventDefault();
-                      setToogleVisiblePassword(!toogleVisiblePassword);
-                    }}
-                  >
-                    {toogleVisiblePassword ? (
-                      <EyeIcon className="w-5 h-5 text-zinc-900" />
-                    ) : (
-                      <EyeOffIcon className="w-5 h-5 text-zinc-900" />
-                    )}
-                  </button>
-                </div>
+                </InputTextForm.root>
+                {errors.password && (
+                  <MessageErrorForm>{errors.password.message}</MessageErrorForm>
+                )}
               </div>
             </div>
           </CardRoot.CardContent>
@@ -83,13 +115,7 @@ const FormComponent = (): ReactNode => {
                   Click aqui
                 </Button>
               </p>
-              <Button
-                type="submit"
-                size="default"
-                className="w-full bg-violet-600 hover:bg-violet-700"
-              >
-                Logar
-              </Button>
+              <ButtonForm pending={isLoading} />
             </div>
           </CardRoot.CardFooter>
         </form>
