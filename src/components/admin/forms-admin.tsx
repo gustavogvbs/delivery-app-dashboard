@@ -1,10 +1,11 @@
-import { apiAdmin } from "@lib/api";
 import { Loader2 } from "lucide-react";
 
 import FormComponent from "@components/FormComponents/form-login";
 import FormRegister from "@components/FormComponents/form-register";
 import { Skeleton } from "@ui/skeleton";
 import * as TabsRoot from "@ui/tabs";
+
+import { apiAdmin } from "@lib/api";
 
 import { RegisterSchemaType } from "@type/forms/register";
 
@@ -14,7 +15,7 @@ interface Props {
 
 const useApiAdmin = apiAdmin();
 
-const FormsAdmin = ({ isLoading }: Props) => {
+const FormsAdmin = ({ isLoading = false }: Props) => {
   const handleRegister = async (data: RegisterSchemaType) => {
     try {
       const res = await useApiAdmin.registerAmin(data);
@@ -79,10 +80,6 @@ const FormsAdmin = ({ isLoading }: Props) => {
       )}
     </TabsRoot.Tabs>
   );
-};
-
-FormsAdmin.defaultProps = {
-  isLoading: false,
 };
 
 export default FormsAdmin;

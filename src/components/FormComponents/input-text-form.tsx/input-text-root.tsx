@@ -36,9 +36,4 @@ const InputTextRoot = ({
   );
 };
 
-InputTextRoot.defaultProps = {
-  children: null,
-  type: "text",
-};
-
 export default InputTextRoot;

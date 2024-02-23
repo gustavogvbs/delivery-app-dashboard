@@ -4,6 +4,8 @@ import { Nunito } from "next/font/google";
 import "@styles/globals.css";
 import { cn } from "@lib/utils";
 
+import Providers from "./providers";
+
 const roboto = Nunito({
   weight: ["400", "500", "600", "700"],
   subsets: ["latin"],
@@ -22,9 +24,9 @@ const RootLayout = ({
   children: React.ReactNode;
 }>) => {
   return (
-    <html lang="en">
+    <html lang="pt">
       <body className={cn(" font-mono font-semibold ", roboto.variable)}>
-        {children}
+        <Providers>{children}</Providers>
       </body>
     </html>
   );
