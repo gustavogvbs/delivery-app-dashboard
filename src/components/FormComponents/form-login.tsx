@@ -1,15 +1,18 @@
 "use client";
+import { useRouter } from "next/navigation.js";
 import { ReactNode, useState } from "react";
 import { useForm } from "react-hook-form";
 
 import { zodResolver } from "@hookform/resolvers/zod";
+
+import { setCookie } from "cookies-next";
 
 import { ButtonForm } from "@components/FormComponents/button-form";
 import { Button } from "@ui/button";
 import * as CardRoot from "@ui/card";
 import { Label } from "@ui/label";
 
-import { apiAdmin } from "@lib/api";
+import { api } from "@lib/api";
 
 import { LoginSchemaType, loginSchema } from "@type/forms/login";
 
@@ -17,7 +20,8 @@ import { InputTextForm } from "./input-text-form.tsx";
 import MessageErrorForm from "./message-error-form";
 
 const FormComponent = (): ReactNode => {
-  const useApiAdmin = apiAdmin();
+  const useApiAdmin = api.admin();
+  const router = useRouter();
 
   const [toogleVisiblePassword, setToogleVisiblePassword] = useState(false);
 
@@ -31,8 +35,19 @@ const FormComponent = (): ReactNode => {
 
   const handleLoginSubmit = async (data: LoginSchemaType) => {
     try {
-      const user = await useApiAdmin.loginAmin(data);
-      console.log(user);
+      const { data: res } = await useApiAdmin.LOGIN(data);
+
+      if (res) {
+        setCookie(
+          "user-data",
+          JSON.stringify({
+            id: res.id,
+            name: res.attributes.name,
+            email: res.attributes.email,
+          }),
+        );
+        return router.push("/admin/dashboard");
+      }
     } catch (error) {
       console.log(error);
     }

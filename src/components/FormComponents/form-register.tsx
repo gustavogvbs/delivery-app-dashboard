@@ -1,23 +1,24 @@
 "use client";
+import { useRouter } from "next/navigation.js";
 import { ReactNode, useState } from "react";
 import { useForm } from "react-hook-form";
 
 import { zodResolver } from "@hookform/resolvers/zod";
 
+import { setCookie } from "cookies-next";
+
 import { ButtonForm } from "@components/FormComponents/button-form";
 import * as CardRoot from "@ui/card";
 import { Label } from "@ui/label";
+
+import { api } from "@lib/api";
 
 import { RegisterSchemaType, registerSchema } from "@type/forms/register";
 
 import { InputTextForm } from "./input-text-form.tsx";
 import MessageErrorForm from "./message-error-form";
 
-interface Props {
-  handleRegister: (data: RegisterSchemaType) => Promise<void>;
-}
-
-const FormRegister = ({ handleRegister }: Props): ReactNode => {
+const FormRegister = (): ReactNode => {
   const [toogleVisiblePassword, setToogleVisiblePassword] = useState(false);
 
   const {
@@ -28,10 +29,25 @@ const FormRegister = ({ handleRegister }: Props): ReactNode => {
     resolver: zodResolver(registerSchema),
   });
 
+  const useApiAdmin = api.admin();
+  const router = useRouter();
+
   const handleRegsiterSubmit = async (data: RegisterSchemaType) => {
     if (data.confirmPass === data.password) {
       try {
-        await handleRegister(data);
+        const { data: res } = await useApiAdmin.REGISTER(data);
+
+        if (res) {
+          setCookie(
+            "user-data",
+            JSON.stringify({
+              id: res.id,
+              name: res.attributes.name,
+              email: res.attributes.email,
+            }),
+          );
+          return router.push("/admin/dashboard");
+        }
       } catch (error) {
         console.log(error);
       }

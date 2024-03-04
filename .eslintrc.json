@@ -51,6 +51,8 @@
           "/^@lib/",
           "/^@utils/",
           "/^@config/",
+          "/^@contracts/",
+          "/^@schemas/",
           ["/^@type/", "/^contracts/"],
           "/^absolute/",
           ["parent", "sibling", "index"]

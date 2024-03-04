@@ -5,26 +5,11 @@ import FormRegister from "@components/FormComponents/form-register";
 import { Skeleton } from "@ui/skeleton";
 import * as TabsRoot from "@ui/tabs";
 
-import { apiAdmin } from "@lib/api";
-
-import { RegisterSchemaType } from "@type/forms/register";
-
 interface Props {
   isLoading?: boolean;
 }
 
-const useApiAdmin = apiAdmin();
-
 const FormsAdmin = ({ isLoading = false }: Props) => {
-  const handleRegister = async (data: RegisterSchemaType) => {
-    try {
-      const res = await useApiAdmin.registerAmin(data);
-      console.log(res);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
   return (
     <TabsRoot.Tabs className="w-full max-w-[400px]" defaultValue="login">
       <TabsRoot.TabsList className="w-full h-12 bg-zinc-900 border-2 border-zinc-600 text-zinc-500">
@@ -74,7 +59,7 @@ const FormsAdmin = ({ isLoading = false }: Props) => {
             <FormComponent />
           </TabsRoot.TabsContent>
           <TabsRoot.TabsContent value="register">
-            <FormRegister handleRegister={handleRegister} />
+            <FormRegister />
           </TabsRoot.TabsContent>
         </>
       )}

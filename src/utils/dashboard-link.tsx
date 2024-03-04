@@ -56,19 +56,19 @@ export const LinksPageAdmin: LinksType[] = [
   {
     id: LinksAdmin.TENANTS,
     label: "Estabelecimentos",
-    link: "/tenants",
+    link: "/dashboard/tenants",
     icone: <Utensils className={classIcom} />,
   },
   {
     id: LinksAdmin.USERS,
     label: "Usuarios",
-    link: "/users",
+    link: "/dashboard/users",
     icone: <Users className={classIcom} />,
   },
   {
     id: LinksAdmin.DEV,
     label: "Desenvolvedores",
-    link: "/devs",
+    link: "/dashboard/devs",
     icone: <Code2 className={classIcom} />,
   },
 ];
