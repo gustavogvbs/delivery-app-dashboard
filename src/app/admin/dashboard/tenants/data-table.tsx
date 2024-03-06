@@ -1,6 +1,7 @@
 "use client";
 
-import React, { useState } from "react";
+import { usePathname, useSearchParams, useRouter } from "next/navigation";
+import React, { useCallback, useState } from "react";
 
 import {
   ColumnDef,
@@ -15,7 +16,6 @@ import {
 } from "@tanstack/react-table";
 import { ChevronDownIcon, Plus } from "lucide-react";
 
-import LayoutProductModal from "@components/layout-product-modal";
 import TableComponent from "@components/TableComponent";
 import { Button } from "@ui/button";
 import * as DropdownRoot from "@ui/dropdown-menu";
@@ -28,6 +28,11 @@ interface DataTableProps<TData, TValue> {
   data: TData[];
 }
 
+interface ParamsProps {
+  stateVal: string;
+  typeVal: string;
+}
+
 export function DataTable<TData, TValue>({
   columns,
   data,
@@ -36,6 +41,10 @@ export function DataTable<TData, TValue>({
     id: "name",
     label: "Nome",
   });
+
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const pathname = usePathname();
 
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
@@ -60,6 +69,21 @@ export function DataTable<TData, TValue>({
       rowSelection,
     },
   });
+
+  const createQueryString = useCallback(
+    ({ stateVal, typeVal }: ParamsProps) => {
+      const params = new URLSearchParams(searchParams.toString());
+      params.set("modal-state", stateVal);
+      params.set("modal-type", typeVal);
+
+      return params.toString();
+    },
+    [searchParams],
+  );
+
+  const handleOpenModal = (data: ParamsProps) => {
+    router.push(pathname + "?" + createQueryString(data));
+  };
 
   return (
     <>
@@ -145,13 +169,15 @@ export function DataTable<TData, TValue>({
                 })}
             </DropdownRoot.DropdownMenuContent>
           </DropdownRoot.DropdownMenu>
-          <LayoutProductModal
-            textButton={
-              <Button className="flex gap-2 bg-violet-600 hover:bg-violet-800">
-                Adicionar <Plus className="size-4" />
-              </Button>
+          <Button
+            type="button"
+            onClick={() =>
+              handleOpenModal({ stateVal: "open", typeVal: "tenant" })
             }
-          />
+            className="flex gap-2 bg-violet-600 hover:bg-violet-800"
+          >
+            Adicionar <Plus className="size-4" />
+          </Button>
         </div>
       </div>
       <div className="rounded-md border ">

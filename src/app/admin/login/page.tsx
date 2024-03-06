@@ -1,16 +1,10 @@
-"use client";
+"use server";
 
-import { ReactNode, useEffect, useState } from "react";
+import { ReactNode } from "react";
 
 import FormsAdmin from "@components/admin/forms-admin";
 
 const TenantLogin = (): ReactNode => {
-  const [isClient, setIsClient] = useState(false);
-
-  useEffect(() => {
-    setIsClient(true);
-  }, []);
-
   return (
     <section className="min-h-screen px-2 flex flex-col gap-10 pt-[10vh] bg-zinc-900">
       <div className="max-w-[380px] mx-auto">
@@ -21,7 +15,7 @@ const TenantLogin = (): ReactNode => {
         </h1>
       </div>
       <div className="flex justify-center items-center  min-h-full">
-        <FormsAdmin isLoading={!isClient} />
+        <FormsAdmin />
       </div>
     </section>
   );

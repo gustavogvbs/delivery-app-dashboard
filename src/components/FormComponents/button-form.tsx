@@ -6,9 +6,10 @@ import { Button } from "../ui/button";
 
 interface Props {
   pending: boolean;
+  children?: string;
 }
 
-export const ButtonForm = ({ pending }: Props) => {
+export const ButtonForm = ({ pending, children }: Props) => {
   return (
     <Button
       disabled={pending}
@@ -16,7 +17,7 @@ export const ButtonForm = ({ pending }: Props) => {
       size="default"
       className="w-full bg-violet-600 hover:bg-violet-700"
     >
-      Entrar
+      {children ? children : "Entrar"}
       {pending && <Loader2 className="w-4 h-4 ml-2 animate-spin" />}
     </Button>
   );

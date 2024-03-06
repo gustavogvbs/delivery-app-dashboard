@@ -4,7 +4,7 @@ import { ColumnDef } from "@tanstack/react-table";
 import { Edit } from "lucide-react";
 
 import { ActionsButtonTable } from "@components/actions-button-table";
-import LayoutProductModal from "@components/layout-product-modal";
+import LayoutProductModal from "@components/modals/layout-product-modal";
 import { Checkbox } from "@ui/checkbox";
 
 // This type is used to define the shape of our data.

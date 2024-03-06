@@ -15,7 +15,7 @@ import {
 } from "@tanstack/react-table";
 import { ChevronDownIcon, Plus } from "lucide-react";
 
-import LayoutProductModal from "@components/layout-product-modal";
+import LayoutProductModal from "@components/modals/layout-product-modal";
 import TableComponent from "@components/TableComponent";
 import { Button } from "@ui/button";
 import * as DropdownRoot from "@ui/dropdown-menu";
